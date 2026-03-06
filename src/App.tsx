@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import CsvTable from "./CsvTable";
+import FilterSelect from "./FilterSelect";
 
 export default function App() {
   // const [csvText, setCsvText] = useState<string>("読み込み中...");
@@ -14,7 +15,13 @@ export default function App() {
   const CSV_URL =
     "https://docs.google.com/spreadsheets/d/19uzYNoPMGQO_t4pUcoT-AsZnE4uLl19QW6jUeWYj1YM/export?format=csv&gid=1569387322";
 
-  
+  const [selectedItem, setSelectedItem] = useState("");
+
+  const filter_Key = "鍛冶素材（髄材）";
+  const filteredData = csvData.filter((row) => {
+    if (!selectedItem) return true;
+    return row[filter_Key] === selectedItem;
+  });
 
   useEffect(() => {
 
@@ -63,8 +70,16 @@ export default function App() {
 
       {error && <p className="text-red-500">{error}</p>}
 
+      {/* フィルターUI */}
+      <FilterSelect
+        csvData={csvData}
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        filterKey={filter_Key}
+      />
+
       <div className="bg-white rounded-xl shadow-lg p-2">
-        <CsvTable data={csvData} />
+        <CsvTable data={filteredData} />
       </div>
     </div>
   );
