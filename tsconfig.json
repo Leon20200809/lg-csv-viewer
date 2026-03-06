@@ -1,44 +1,103 @@
 {
-  // Visit https://aka.ms/tsconfig to read more about this file
+  // TypeScriptの設定ファイル
+  // 参考: https://aka.ms/tsconfig
   "compilerOptions": {
-    // File Layout
-    // "rootDir": "./src",
-    // "outDir": "./dist",
 
-    // Environment Settings
-    // See also https://aka.ms/tsconfig/module
-    "module": "nodenext",
-    "target": "esnext",
-    "types": [],
-    // For nodejs:
-    // "lib": ["esnext"],
-    // "types": ["node"],
-    // and npm install -D @types/node
+    // =========================
+    // JavaScript仕様レベル
+    // =========================
 
-    // Other Outputs
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
+    // どのJS仕様に変換するか
+    // ESNext = 最新JSを前提（Viteがブラウザ用に最適化してくれる）
+    "target": "ESNext",
 
-    // Stricter Typechecking Options
+    // import/export の扱い
+    // ESNext = 現代的なESモジュールをそのまま使う
+    "module": "ESNext",
+
+    // モジュール解決方法
+    // Bundler = ViteやWebpackなどのバンドラ前提の解決
+    // Node特有の解決ルールを無視する
+    "moduleResolution": "Bundler",
+
+    // Vite特有の型を使う
+    // 例: import.meta.env
+    "types": ["vite/client"],
+
+
+    // =========================
+    // 出力ファイル制御
+    // =========================
+
+    // sourceMapを生成しない
+    // (JSとTSの対応マップ。デバッグ用)
+    "sourceMap": false,
+
+    // 型定義ファイル(.d.ts)を生成しない
+    // ライブラリ開発では必要だがアプリでは不要
+    "declaration": false,
+
+    // .d.ts のマップも作らない
+    "declarationMap": false,
+
+    // TypeScriptはファイルを出力しない
+    // → ビルドはViteに任せる
+    // → tscは型チェック専用になる
+    "noEmit": true,
+
+
+    // =========================
+    // 型チェック強化
+    // =========================
+
+    // TypeScriptの厳格モード
+    // null / undefined / 型ミスなどを強くチェック
+    "strict": true,
+
+    // 配列アクセスなどを安全にする
+    // arr[0] が undefined の可能性を考慮する
     "noUncheckedIndexedAccess": true,
+
+    // Optionalプロパティの扱いを厳密化
+    // name?: string の意味を曖昧にしない
     "exactOptionalPropertyTypes": true,
 
-    // Style Options
-    // "noImplicitReturns": true,
-    // "noImplicitOverride": true,
-    // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
-    // "noFallthroughCasesInSwitch": true,
-    // "noPropertyAccessFromIndexSignature": true,
 
-    // Recommended Options
-    "strict": true,
+    // =========================
+    // React設定
+    // =========================
+
+    // React 17+ の新しいJSX変換
+    // import React from 'react' が不要になる
     "jsx": "react-jsx",
+
+
+    // =========================
+    // モジュール関連
+    // =========================
+
+    // import/export をTypeScriptが勝手に変換しない
+    // 現代のビルドツールと相性が良い
     "verbatimModuleSyntax": true,
+
+    // 各ファイルを独立モジュールとして扱う
+    // Vite / Babel との互換性向上
     "isolatedModules": true,
+
+    // 副作用importの安全チェック
+    // 例: import "./init"
     "noUncheckedSideEffectImports": true,
+
+    // ファイルを強制的にモジュール扱い
     "moduleDetection": "force",
-    "skipLibCheck": true,
+
+
+    // =========================
+    // パフォーマンス
+    // =========================
+
+    // node_modulesの型チェックをスキップ
+    // コンパイル高速化
+    "skipLibCheck": true
   }
 }

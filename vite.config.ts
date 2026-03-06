@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
-export default defineConfig({
-  base: "/lg-csv-viewer/",
+export default defineConfig(({ mode }) => ({
+  base: mode === "production" ? "/lg-csv-viewer/" : "/",
   plugins: [react(), tailwindcss()],
-});
+}));
